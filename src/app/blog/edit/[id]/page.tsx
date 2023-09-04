@@ -24,6 +24,16 @@ const getBlogById = async ( id: number ) => {
     return data.post;
 };
 
+const deleteBlog = async ( id: number ) => {
+    const res = await fetch(`http://localhost:3000/api/blog/${id}`, {
+        method: 'DELETE',
+        headers: {
+            "Content-Type": "application/json",
+        },
+    });
+    return res.json();
+};
+
 const EditPost = ({ params }: { params: { id: number } }) => {
     const router = useRouter();
     const titleRef = useRef<HTMLInputElement | null>(null);
@@ -53,6 +63,15 @@ const EditPost = ({ params }: { params: { id: number } }) => {
             });
     }, [])
 
+    const handleDelete = async () => {
+        toast.loading("deleting");
+        await deleteBlog(params.id);
+        toast.success("delete success");
+
+        router.push("/");
+        router.refresh();
+    };
+
     return (
         <>
             <Toaster />
@@ -79,7 +98,7 @@ const EditPost = ({ params }: { params: { id: number } }) => {
                     <button className="font-semibold px-4 py-2 shadow-xl bg-slate-200 rounded-lg m-auto hover:bg-slate-100">
                         Update
                     </button>
-                    <button className="ml-2 font-semibold px-4 py-2 shadow-xl bg-red-400 rounded-lg m-auto hover:bg-red-300">
+                    <button onClick={ handleDelete } className="ml-2 font-semibold px-4 py-2 shadow-xl bg-red-400 rounded-lg m-auto hover:bg-red-300">
                         Delete
                     </button>
                 </form>
