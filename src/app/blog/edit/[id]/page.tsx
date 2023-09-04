@@ -1,5 +1,5 @@
 'use client';
-import React, { useRef } from 'react';
+import React, { useRef, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import toast, { Toaster } from 'react-hot-toast';
 
@@ -18,6 +18,12 @@ const editBlog = async (
     return res.json();
 };
 
+const getBlogById = async ( id: number ) => {
+    const res = await fetch(`http://localhost:3000/api/blog/${id}`);
+    const data = await res.json();
+    return data.post;
+};
+
 const EditPost = ({ params }: { params: { id: number } }) => {
     const router = useRouter();
     const titleRef = useRef<HTMLInputElement | null>(null);
@@ -33,6 +39,19 @@ const EditPost = ({ params }: { params: { id: number } }) => {
         router.push("/");
         router.refresh();
     }
+
+    useEffect(() => {
+        getBlogById(params.id)
+            .then((data) => {
+                if (titleRef.current && descriptionRef.current) {
+                    titleRef.current.value = data.title;
+                    descriptionRef.current.value = data.description;
+                }
+            })
+            .catch((err) => {
+                toast.error("an error has occured", { id: "1" });
+            });
+    }, [])
 
     return (
         <>
@@ -53,8 +72,9 @@ const EditPost = ({ params }: { params: { id: number } }) => {
                     />
                     <textarea
                     ref={ descriptionRef }
-                    placeholder="記事詳細を入力"
+                    placeholder="内容を入力"
                     className="rounded-md px-4 py-2 w-full my-2"
+                    rows={20}
                     ></textarea>
                     <button className="font-semibold px-4 py-2 shadow-xl bg-slate-200 rounded-lg m-auto hover:bg-slate-100">
                         Update

@@ -55,8 +55,9 @@ const PostBlog = () => {
                         />
                         <textarea
                         ref={ descriptionRef }
-                        placeholder="記事詳細を入力"
+                        placeholder="内容を入力"
                         className="rounded-md px-4 py-2 w-full my-2"
+                        rows={20}
                         ></textarea>
                         <button type="submit" className="font-semibold px-4 py-2 shadow-xl bg-slate-200 rounded-lg m-auto hover:bg-slate-100">
                             投稿
