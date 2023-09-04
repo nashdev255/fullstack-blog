@@ -1,9 +1,12 @@
-'use client'
+'use client';
 import React, { useRef } from 'react';
 import { useRouter } from 'next/navigation';
 import toast, { Toaster } from 'react-hot-toast';
 
-const postBlog = async (title: string | undefined, description: string | undefined) => {
+const postBlog = async (
+    title: string | undefined,
+    description: string | undefined
+) => {
     const res = await fetch('http://localhost:3000/api/blog', {
         method: 'POST',
         headers: {
