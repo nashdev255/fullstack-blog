@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import { PostType } from '@/types';
+import { PostType } from '@/app/types';
 
 async function fetchAllBlogs() {
   const res = await fetch('http://localhost:3000/api/blog', {
